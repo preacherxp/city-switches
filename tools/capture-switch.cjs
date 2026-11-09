@@ -47,6 +47,7 @@ fs.mkdirSync(`${out}/frames`, { recursive: true });
 
     for (const [name, width, height] of [['desktop', 960, 600], ['phone', 390, 844], ['narrow', 320, 680]]) {
       await page.setViewportSize({ width, height });
+      await page.evaluate(() => scrollTo(0, 0));
       for (const [phase, position, morning] of [['day', 0, false], ['dusk', .64, false], ['night', 1, false], ['dawn', .48, true]]) {
         await page.locator(tag).evaluate((el, { position, morning }) => {
           el.position = position;
@@ -57,11 +58,12 @@ fs.mkdirSync(`${out}/frames`, { recursive: true });
           el.emitScrub();
         }, { position, morning });
         await page.waitForTimeout(350);
+        await page.evaluate(() => scrollTo(0, 0));
+        await page.locator('section').screenshot({ path: `${out}/${name}-${phase}.png` });
         const box = await page.locator(tag).boundingBox();
         assert.ok(box.x >= 0 && box.x + box.width <= width + 1, `${city}: clipped control at ${width}px`);
-        assert.ok(box.y >= 0 && box.y + box.height <= height + 1, `${city}: vertical control clipping`);
+        assert.ok(box.y >= 0 && box.y + box.height <= height + 1, `${city}: vertical control clipping at ${width}x${height}: ${JSON.stringify(box)}`);
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${city}: horizontal overflow`);
-        await page.locator('section').screenshot({ path: `${out}/${name}-${phase}.png` });
       }
     }
 

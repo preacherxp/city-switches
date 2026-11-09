@@ -163,6 +163,9 @@ Use a short, repeatable check and keep evidence of what actually ran.
 - When asked for a switch GIF/video, capture the **actual browser-rendered full
   control**, including the frame, glass lens, its motion, and changing city light.
   A raw city-panorama animation is a different artifact.
+- Prefer H.264 MP4 for smooth 60 fps playback and smaller files when the user
+  accepts video. GIF delays use hundredths of a second and cannot reliably
+  preserve exact 60 fps. Label the format and actual frame rate truthfully.
 - Aim for a 6–8 second loop with brief day/night holds and both travel directions.
   Keep the entire frame inside the export and preserve enough size for landmarks
   to read. Avoid excessive empty padding or unrelated captions.

@@ -1,8 +1,11 @@
 name: Review and capture switches
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      cities:
+        description: 'JSON list of cities to review and export'
+        default: '["warsaw", "berlin", "lisbon", "gliwice", "czestochowa"]'
+        required: true
 permissions:
   contents: read
 jobs:
@@ -12,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        city: [warsaw, berlin, lisbon, gliwice, czestochowa]
+        city: ${{ fromJSON(inputs.cities) }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -35,7 +38,6 @@ jobs:
           python3 -m http.server 8080 > "$RUNNER_TEMP/http.log" 2>&1 &
           NODE_PATH="$RUNNER_TEMP/recording/node_modules" node tools/capture-switch.cjs "$CITY"
           ffmpeg -y -framerate 60 -i "capture/$CITY/frames/%03d.png" -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart "capture/$CITY/$CITY-day-night-60fps.mp4"
-          ffmpeg -y -framerate 60 -i "capture/$CITY/frames/%03d.png" -filter_complex "[0:v]fps=50,scale=800:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=224[p];[b][p]paletteuse=dither=bayer:bayer_scale=4" -loop 0 "capture/$CITY/$CITY-day-night.gif"
       - uses: actions/upload-artifact@v5
         if: always()
         with:
@@ -43,6 +45,5 @@ jobs:
           path: |
             capture/${{ matrix.city }}/*.png
             capture/${{ matrix.city }}/*.json
-            capture/${{ matrix.city }}/*.gif
             capture/${{ matrix.city }}/*.mp4
           retention-days: 7
