@@ -30,7 +30,7 @@ for (const city of cities) {
   context.window = context;
   vm.runInContext(engine, context);
   vm.runInContext(scene, context);
-  assert.equal(registry.size, 1, `${city}: one registered component`);
+  assert.deepEqual([...registry.keys()].sort(), ['city-readout', `${city}-switch`].sort(), `${city}: the switch and the readout are registered`);
   const Element = registry.get(`${city}-switch`);
   const world = new Element().world;
   const paint = world.px.bind(world);

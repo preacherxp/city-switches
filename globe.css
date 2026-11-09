@@ -22,7 +22,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* Stepped pixel borders: four side shadows leave the corners open. */
-.pixel-box, .hud, .hud button, .cluster-menu, .read {
+.pixel-box, .hud, .hud button, .cluster-menu {
   box-shadow: 0 calc(-1 * var(--px)) 0 0 var(--edge, var(--ink)), 0 var(--px) 0 0 var(--edge, var(--ink)),
     calc(-1 * var(--px)) 0 0 0 var(--edge, var(--ink)), var(--px) 0 0 0 var(--edge, var(--ink));
 }
@@ -81,26 +81,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
 #switches { width: 100%; max-width: 680px; }
 .switch-pane { width: 100%; }
 .switch-pane[hidden] { display: none; }
-.read { display: flex; align-items: baseline; gap: 18px; max-width: 100%; padding: 10px 15px; color: #f6f2e9; }
-/* The readout as a small LCD panel. Only paint changes here: every box keeps its size and place. */
-.read {
-  --led: color-mix(in oklab, #ffc96a calc(var(--dark) * 100%), #f3ecd8);
-  background-color: #0e1a22;
-  background-image: repeating-linear-gradient(0deg, #ffffff07 0 1px, transparent 1px 3px), linear-gradient(#16262f, #0b151c);
-  box-shadow: 0 calc(-1 * var(--px)) 0 0 var(--ink), 0 var(--px) 0 0 var(--ink), calc(-1 * var(--px)) 0 0 0 var(--ink), var(--px) 0 0 0 var(--ink),
-    inset 0 3px 0 #ffffff12, inset 3px 0 0 #ffffff0a, inset 0 -3px 0 #00000059, inset -3px 0 0 #00000038;
+/* The readout is the engine's <city-readout>; these keep this page's smaller size */
+#readout {
+  --readout-gap: 18px; --readout-padding: 10px 15px; --readout-max-width: 100%;
+  --readout-clock-font: 500 32px/1.15 var(--mono); --readout-clock-spacing: normal;
+  --readout-place-font: 600 12px/1.5 var(--mono); --readout-place-size: 12px; --readout-place-case: uppercase; --readout-place-spacing: .06em;
+  justify-content: flex-start;
 }
-.clock { position: relative; z-index: 0; font: 500 32px/1.15 var(--mono); font-variant-numeric: tabular-nums; color: var(--led); text-shadow: 2px 2px 0 #03080c; }
-/* Unlit segments behind the digits, like a pocket LCD */
-.clock::before { content: '88:88'; position: absolute; inset: 0; z-index: -1; color: #ffffff; opacity: .06; text-shadow: none; }
-.clock .colon { animation: colon 1.2s steps(1) infinite; }
-@keyframes colon { 50% { opacity: .25; } }
-.read-place { font: 600 12px/1.5 var(--mono); text-transform: uppercase; letter-spacing: .06em; }
-.read-place b { display: block; color: #f6f2e9; text-shadow: 1px 1px 0 #03080c; }
-#phase { position: relative; color: #a9bcc2; }
-/* A pixel status lamp in the gap before the phase, lit in the colour of the hour */
-#phase::before { content: ''; position: absolute; left: -11px; top: 50%; width: 5px; height: 5px; margin-top: -3px; background: var(--led); box-shadow: 0 0 0 1px #03080c; }
-@media (prefers-reduced-motion: reduce) { .clock .colon { animation: none; } }
 .switch-help { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 18px 0; }
 
 .city-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; }

@@ -559,16 +559,11 @@ async function start() {
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   let selected;
   const panes = new Map(), buttons = new Map(), pins = new Map();
-  const phase = (h) => h < 5 ? 'Night' : h < 7 ? 'Dawn' : h < 10 ? 'Morning' : h < 16 ? 'Daytime' : h < 18 ? 'Golden hour' : h < 19.5 ? 'Signs coming on' : 'Night';
 
   const map = createMap(mapView, canvas, { cities, selected: () => selected, onRender: placePins });
 
   function read(entry) {
     $('switch-stage').style.setProperty('--dark', entry.dark.toFixed(3));
-    const hour = entry.hour % 24, hh = String(Math.floor(hour)).padStart(2, '0'), mm = String(Math.floor(hour % 1 * 60)).padStart(2, '0');
-    const clock = $('clock');
-    if (clock.dataset.time !== `${hh}${mm}`) { clock.dataset.time = `${hh}${mm}`; clock.innerHTML = `${hh}<span class="colon">:</span>${mm}`; }
-    $('phase').textContent = phase(hour);
     map.setDark(entry.dark, selected?.dusk);
   }
   // Scale that shows a city apart from its nearest neighbour, at least regional
@@ -603,9 +598,10 @@ async function start() {
       element.jump(night);
     }
     entry.pane.hidden = false; read(entry);
+    $('readout').setAttribute('city', city.name); $('readout').switch = entry.element;
     for (const [key, button] of buttons) button.setAttribute('aria-pressed', String(key === id));
     const heading = $('city-name'); heading.dataset.text = city.name; pixelHeading(heading);
-    $('read-city').textContent = city.name; $('country').textContent = city.country; $('description').textContent = city.description;
+    $('country').textContent = city.country; $('description').textContent = city.description;
     for (const [prop, value] of [['paper', city.paper], ['night', city.night], ['dusk-colour', city.dusk]]) $('switch-stage').style.setProperty(`--${prop}`, value);
     const base = `https://preacherxp.github.io/${id}-switch/`;
     $('demo-link').href = base; $('mp4-link').href = `${base}${id}-day-night-60fps.mp4`; $('repo-link').href = `https://github.com/preacherxp/${id}-switch`;
