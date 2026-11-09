@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>City switches</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font: 15px/1.5 ui-sans-serif, -apple-system, "Segoe UI", sans-serif; background: #08080f; overflow-x: hidden; }
+
+  /* Each city turns its own wall. --dark follows the hours as that lens moves. */
+  section {
+    --dark: 0;
+    --mix: calc(var(--dark) * 100%);
+    --dusk: calc(var(--dark) * (1 - var(--dark)) * 4);
+    --tint: color-mix(in oklab, var(--dusk-colour) calc(var(--dusk) * 62%), transparent);
+    background: color-mix(in oklab, var(--night) var(--mix), var(--paper));
+    background-image: linear-gradient(var(--tint), var(--tint));
+    color: color-mix(in oklab, #efeaf6 var(--mix), #2a2620);
+    min-height: 100svh;
+    padding: 72px 24px;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 56px;
+    overflow: hidden;
+  }
+  .warsaw { --paper: #e6e9ea; --night: #070b14; --dusk-colour: #3a2c4a; }
+  .berlin { --paper: #e4e4dc; --night: #0a0c0b; --dusk-colour: #33303f; }
+  .lisbon { --paper: #f3e8d4; --night: #080d1a; --dusk-colour: #5a2a3a; }
+  .gliwice { --paper: #e8e8df; --night: #101b26; --dusk-colour: #8c716b; }
+
+  .switch { width: min(680px, calc(100vw - 96px)); display: block; }
+  .read { display: flex; gap: 20px; align-items: baseline; justify-content: center; max-width: calc(100vw - 48px); padding: 12px 16px; border-radius: 12px; background: #13212c; color: #f6f2e9; }
+  .clock { font: 500 44px/1.1 ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .place { font-size: 15px; }
+  .place b { display: block; font-weight: 600; }
+  .place span { color: #c6d1d5; }
+  footer {
+    background: #08080f; color: #8b86a3; text-align: center; padding: 40px 24px 56px; font-size: 14px;
+  }
+  footer a { color: inherit; text-underline-offset: 3px; }
+  kbd { font: 500 12px ui-monospace, "SF Mono", Menlo, monospace; padding: 2px 6px; border: 1px solid #26243a; border-radius: 4px; }
+  .czestochowa { --paper: #e9e6dd; --night: #111f31; --dusk-colour: #9d7d86; }
+  .katowice { --paper: #e4e7e5; --night: #111c2c; --dusk-colour: #82726e; }
+  .remscheid { --paper: #e5e9e6; --night: #101e25; --dusk-colour: #728582; }
+  .zabrze { --paper: #e8e6dc; --night: #14212a; --dusk-colour: #967c69; }
+</style>
+</head>
+<body>
+<section id="warsaw" class="warsaw">
+  <warsaw-switch class="switch"></warsaw-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Warszawa</b><span>Daytime</span></div></div>
+</section>
+<section id="berlin" class="berlin">
+  <berlin-switch class="switch"></berlin-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Berlin</b><span>Daytime</span></div></div>
+</section>
+<section id="lisbon" class="lisbon">
+  <lisbon-switch class="switch"></lisbon-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Lisboa</b><span>Daytime</span></div></div>
+</section>
+<section id="gliwice" class="gliwice" aria-label="Contemporary Gliwice: Rynek and Ratusz, Teatr Muzyczny, and Beer Brothers at Górnych Wałów 30">
+  <gliwice-switch class="switch"></gliwice-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Gliwice</b><span>Daytime</span></div></div>
+</section>
+<section id="czestochowa" class="czestochowa" aria-label="Contemporary Częstochowa: Jasna Góra, Aleja NMP, Plac Biegańskiego and a contemporary Twist tram">
+  <czestochowa-switch class="switch"></czestochowa-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Częstochowa</b><span>Daytime</span></div></div>
+</section>
+<section id="katowice" class="katowice" aria-label="Contemporary Katowice: The Culture Zone with .KTW towers, NOSPR and Spodek.">
+  <katowice-switch class="switch"></katowice-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Katowice</b><span>Daytime</span></div></div>
+</section>
+<section id="remscheid" class="remscheid" aria-label="Contemporary Remscheid: Vaillant headquarters and Holiday Inn Express on Lenneper Straße 164.">
+  <remscheid-switch class="switch"></remscheid-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Remscheid</b><span>Daytime</span></div></div>
+</section>
+<section id="zabrze" class="zabrze" aria-label="Contemporary Zabrze: Restored Carboneum tower, Carnall heritage site, Arena Zabrze and Dom Muzyki i Tańca.">
+  <zabrze-switch class="switch"></zabrze-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Zabrze</b><span>Daytime</span></div></div>
+</section>
+<footer>Drag to move through the hours. Tap to switch. <kbd>←</kbd> <kbd>→</kbd> step, <kbd>Space</kbd> toggles.<p><a href="https://github.com/preacherxp/city-switches">Source &amp; agent guide</a> · <a href="videos.html">60 fps videos</a></p> <a href="index.html">Explore the globe</a> · <a href="videos.html">60 fps videos</a></footer>
+<script src="repos/warsaw-switch/city-switch.js"></script>
+<script src="repos/warsaw-switch/warsaw.js"></script>
+<script src="repos/berlin-switch/berlin.js"></script>
+<script src="repos/lisbon-switch/lisbon.js"></script>
+<script src="repos/gliwice-switch/gliwice.js"></script>
+<script src="repos/czestochowa-switch/czestochowa.js"></script>
+<script src="repos/katowice-switch/katowice.js"></script>
+<script src="repos/remscheid-switch/remscheid.js"></script>
+<script src="repos/zabrze-switch/zabrze.js"></script>
+<script>
+  const phaseOf = (h) => (h >= 5 && h < 7 ? 'Dawn' : h >= 7 && h < 10 ? 'Morning' : h >= 10 && h < 16 ? 'Daytime' : h >= 16 && h < 18 ? 'Golden hour' : h >= 18 && h < 19.5 ? 'Signs coming on' : 'Night');
+  for (const section of document.querySelectorAll('section')) {
+    const toggle = section.querySelector('.switch');
+    const clock = section.querySelector('.clock');
+    const phase = section.querySelector('.place span');
+    const key = `city-switch:${section.className}`;
+    toggle.addEventListener('scrub', (e) => {
+      const { hour, dark } = e.detail;
+      section.style.setProperty('--dark', dark.toFixed(3));
+      clock.textContent = `${String(Math.floor(hour)).padStart(2, '0')}:${String(Math.floor((hour % 1) * 60)).padStart(2, '0')}`;
+      phase.textContent = phaseOf(hour);
+    });
+    toggle.addEventListener('change', (e) => localStorage.setItem(key, e.detail.night ? 'night' : 'day'));
+    const saved = localStorage.getItem(key);
+    if (saved ? saved === 'night' : matchMedia('(prefers-color-scheme: dark)').matches) toggle.jump?.(true);
+  }
+</script>
+</body>
+</html>

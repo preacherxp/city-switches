@@ -1,0 +1,98 @@
+[
+  {
+    "id": "warsaw",
+    "name": "Warsaw",
+    "country": "Poland",
+    "latitude": 52.22977,
+    "longitude": 21.01178,
+    "locationSource": "https://www.geonames.org/756135/",
+    "description": "The Palace of Culture, neighbourhood shop signs and first snow.",
+    "paper": "#e6e9ea",
+    "night": "#070b14",
+    "dusk": "#3a2c4a"
+  },
+  {
+    "id": "berlin",
+    "name": "Berlin",
+    "country": "Germany",
+    "latitude": 52.52437,
+    "longitude": 13.41053,
+    "locationSource": "https://www.geonames.org/2950159/",
+    "description": "The Spree, Oberbaumbrücke, the Fernsehturm and late-night streets.",
+    "paper": "#e4e4dc",
+    "night": "#0a0c0b",
+    "dusk": "#33303f"
+  },
+  {
+    "id": "lisbon",
+    "name": "Lisbon",
+    "country": "Portugal",
+    "latitude": 38.72509,
+    "longitude": -9.1498,
+    "locationSource": "https://www.geonames.org/2267057/",
+    "description": "Steep streets, tiled façades, trams and the Tejo.",
+    "paper": "#f3e8d4",
+    "night": "#080d1a",
+    "dusk": "#5a2a3a"
+  },
+  {
+    "id": "gliwice",
+    "name": "Gliwice",
+    "country": "Poland",
+    "latitude": 50.29761,
+    "longitude": 18.67658,
+    "locationSource": "https://www.geonames.org/3099230/",
+    "description": "Rynek and Ratusz, Teatr Muzyczny and Beer Brothers.",
+    "paper": "#e8e8df",
+    "night": "#101b26",
+    "dusk": "#8c716b"
+  },
+  {
+    "id": "czestochowa",
+    "name": "Częstochowa",
+    "country": "Poland",
+    "latitude": 50.79646,
+    "longitude": 19.12409,
+    "locationSource": "https://www.geonames.org/3100946/",
+    "description": "Jasna Góra, Aleja NMP, the Ratusz and a modern Twist tram.",
+    "paper": "#e9e6dd",
+    "night": "#111f31",
+    "dusk": "#9d7d86"
+  },
+  {
+    "id": "katowice",
+    "name": "Katowice",
+    "country": "Poland",
+    "latitude": 50.2597,
+    "longitude": 19.02173,
+    "locationSource": "https://www.geonames.org/3096472/",
+    "description": ".KTW towers, NOSPR and Spodek in the Culture Zone.",
+    "paper": "#e4e7e5",
+    "night": "#111c2c",
+    "dusk": "#82726e"
+  },
+  {
+    "id": "remscheid",
+    "name": "Remscheid",
+    "country": "Germany",
+    "latitude": 51.17983,
+    "longitude": 7.1925,
+    "locationSource": "https://www.geonames.org/2848273/",
+    "description": "The Vaillant headquarters campus and Holiday Inn Express.",
+    "paper": "#e5e9e6",
+    "night": "#101e25",
+    "dusk": "#728582"
+  },
+  {
+    "id": "zabrze",
+    "name": "Zabrze",
+    "country": "Poland",
+    "latitude": 50.32492,
+    "longitude": 18.78576,
+    "locationSource": "https://www.geonames.org/3080985/",
+    "description": "Carboneum, Carnall, Arena Zabrze and Dom Muzyki i Tańca.",
+    "paper": "#e8e6dc",
+    "night": "#14212a",
+    "dusk": "#967c69"
+  }
+]

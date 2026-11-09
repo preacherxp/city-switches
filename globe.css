@@ -1,0 +1,75 @@
+:root { color-scheme: dark; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; color: #eeeae0; background: #10212b; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: #d6e6e6; text-underline-offset: 4px; }
+button { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid #e5c48e; outline-offset: 5px; }
+.site-header, main, .site-footer { max-width: 1320px; margin: auto; padding-inline: 32px; }
+.site-header { display: flex; justify-content: space-between; gap: 24px; align-items: center; padding-top: 30px; padding-bottom: 24px; border-bottom: 1px solid #30444e; }
+.site-header h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.025em; }
+.site-header nav { display: flex; gap: 24px; font-size: 14px; }
+.intro { margin: 30px 0 0; color: #bccbcf; max-width: 650px; font-size: 18px; line-height: 1.6; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-top: 12px; }
+.world { min-width: 0; }
+.earth-view { position: relative; height: 490px; }
+#earth { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+#earth:active { cursor: grabbing; }
+#pins { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.pin { position: absolute; width: 28px; height: 28px; transform: translate(-50%, -50%); padding: 0; border-radius: 50%; border: 2px solid #e2d8c2; color: #10212b; background: #e2d8c2; pointer-events: auto; cursor: pointer; font-size: 12px; font-weight: 700; box-shadow: 0 1px 5px #0b1927; }
+.pin.single { width: 14px; height: 14px; }
+.pin.current { background: #e7ad5e; border-color: #fff2d6; box-shadow: 0 0 0 4px #e7ad5e33; }
+.cluster-menu { position: absolute; z-index: 3; width: 200px; max-width: calc(100% - 24px); padding: 8px; border: 1px solid #63737b; background: #152d39; border-radius: 10px; box-shadow: 0 10px 30px #07141e88; }
+.cluster-menu[hidden] { display: none; }
+.cluster-menu button { display: block; width: 100%; padding: 8px 10px; border: 0; color: #eeeae0; background: transparent; text-align: left; border-radius: 5px; cursor: pointer; }
+.cluster-menu button:hover { background: #294550; }
+.world-controls { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: -12px; position: relative; }
+.world-controls button { color: #e8e7dd; background: transparent; border: 1px solid #506671; border-radius: 7px; min-width: 36px; min-height: 36px; cursor: pointer; }
+.world-controls button:hover { background: #243d48; }
+.world-controls .reset { padding: 6px 12px; font-size: 13px; }
+.world-note { color: #bdcace; text-align: center; font-size: 13px; line-height: 1.6; margin: 15px 0 22px; }
+.city-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; }
+.city-button { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; min-height: 45px; padding: 10px 4px; border: 0; border-bottom: 1px solid #354b55; color: #dddcd2; background: transparent; text-align: left; cursor: pointer; }
+.city-button small { color: #adbdc4; font-size: 11px; }
+.city-button[aria-pressed="true"] { color: #f0c080; border-bottom-color: #d9ae73; }
+.city-button:hover { color: #fff5dc; }
+.selected-city { min-width: 0; padding-top: 48px; }
+.city-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.city-heading h2 { margin: 0; font-size: clamp(30px, 3vw, 44px); font-weight: 500; letter-spacing: -.035em; }
+#country { color: #bdcace; font-size: 14px; }
+#description { min-height: 48px; color: #c2cdd0; font-size: 15px; line-height: 1.6; max-width: 490px; margin: 10px 0 24px; }
+.switch-stage { --dark: 0; --paper: #e8e6dc; --night: #14212a; --dusk-colour: #967c69; --dusk: calc(var(--dark) * (1 - var(--dark)) * 4); display: grid; justify-items: center; gap: 32px; padding: 48px 30px 32px; border-radius: 20px; background: color-mix(in oklab, var(--night) calc(var(--dark) * 100%), var(--paper)); background-image: linear-gradient(color-mix(in oklab, var(--dusk-colour) calc(var(--dusk) * 62%), transparent), color-mix(in oklab, var(--dusk-colour) calc(var(--dusk) * 62%), transparent)); overflow: hidden; }
+#switches { width: 100%; max-width: 640px; }
+.switch-pane { width: 100%; }
+.switch-pane[hidden] { display: none; }
+.read { display: flex; align-items: baseline; gap: 18px; max-width: 100%; padding: 10px 15px; color: #f6f2e9; background: #13212c; border-radius: 10px; }
+.clock { font: 500 32px/1.15 ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; }
+.read-place { font-size: 13px; line-height: 1.5; }
+.read-place b { display: block; font-weight: 500; }
+#phase { color: #c6d1d5; }
+.switch-help { color: #b7c7cd; font-size: 13px; line-height: 1.6; margin: 18px 0; }
+.city-links { display: flex; flex-wrap: wrap; gap: 12px 22px; font-size: 14px; }
+.site-footer { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 48px; padding-block: 24px; color: #adbec4; border-top: 1px solid #30444e; font-size: 12px; }
+.site-footer a { color: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 900px) {
+  .site-header, main, .site-footer { padding-inline: 24px; }
+  .layout { gap: 28px; }
+  .earth-view { height: 420px; }
+  .city-button { display: block; }
+  .city-button small { display: block; margin-top: 2px; }
+  .switch-stage { padding: 36px 22px 28px; }
+}
+@media (max-width: 700px) {
+  .site-header { align-items: start; }
+  .site-header nav { flex-wrap: wrap; justify-content: end; gap: 8px 18px; max-width: 160px; }
+  .intro { font-size: 16px; margin-top: 22px; }
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .earth-view { height: 350px; }
+  .selected-city { padding-top: 20px; }
+  .city-button { display: flex; }
+  .city-button small { display: inline; }
+  #description { min-height: 0; }
+  .switch-stage { padding: 36px 22px 26px; gap: 28px; }
+  .site-footer { margin-top: 32px; }
+}

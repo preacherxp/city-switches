@@ -54,6 +54,8 @@ for (const city of cities) {
   assert.equal(world.t, time, `${city}: reduced motion stops time`);
   console.log(`${city}: syntax, standalone assets, full time cycle, paint coordinates and reduced motion passed`);
 }
-const gallery = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-for (const match of gallery.matchAll(/<script src="([^"]+)"/g)) assert.ok(fs.existsSync(path.join(root, match[1])), match[1]);
+for (const page of ['index.html', 'gallery.html']) {
+  const html = fs.readFileSync(path.join(root, page), 'utf8');
+  for (const match of html.matchAll(/<script[^>]* src="([^"]+)"/g)) assert.ok(fs.existsSync(path.join(root, match[1])), match[1]);
+}
 console.log('Gallery assets and shared engine compatibility passed.');

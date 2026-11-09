@@ -169,7 +169,10 @@ Use a short, repeatable check and keep evidence of what actually ran.
 - Aim for a 6–8 second loop with brief day/night holds and both travel directions.
   Keep the entire frame inside the export and preserve enough size for landmarks
   to read. Avoid excessive empty padding or unrelated captions.
-- Inspect day, intermediate, night, and return frames, and verify GIF duration,
+- For frame-by-frame capture, stop the browser animation scheduler and advance
+  the real scene by exactly `1 / fps` per captured frame. Assert scene time so
+  slow screenshot rendering cannot speed up the exported city animation.
+- Inspect day, intermediate, night, and return frames, and verify export duration,
   dimensions, looping, and file size. Verify the lens moves and the city animates.
 - If local Chromium cannot run, use an available supported browser or a bounded
   GitHub Actions capture job. Do not substitute a mocked lens and call it a
@@ -189,3 +192,7 @@ Use a short, repeatable check and keep evidence of what actually ran.
   its assets. A configured URL or queued build is not a verified live site.
 - Report the actual repository/demo/download links, what was validated, any
   remaining issues, and any material verification limits. Keep it brief.
+
+## Central globe
+
+Keep `cities.json`, the scene scripts in `index.html`, `gallery.html`, `videos.html`, README and the capture workflow city list in sync when adding a city. Coordinates need a primary location reference. Preserve nearby-marker grouping and the accessible city list. Run `node tools/test-globe.mjs` and the Review globe workflow after globe changes. Each city owns its MP4 export and download link.
