@@ -18,13 +18,16 @@ Berlin and Lisbon scenes before planning. Copy techniques, not content.
 - **Life:** [2–3 ACTIVITIES TIED TO THE PLACE, E.G. A CURRENT TRAM MODEL, RIVER
   TRAFFIC, A MARKET, A CAFÉ TERRACE]. At least one should be a vehicle or other
   signature moving element.
-- **Research:** [NONE / PATH TO A RESEARCH FILE]. If a research file proposes a
-  layout or activity, follow it or update it with the reason for changing it.
+- **References:** [PHOTOS, LINKS OR A RESEARCH FILE / NONE]. Ask me for anything
+  missing before you start. Whatever I cannot supply, research yourself from
+  official sources and real photographs, and write `RESEARCH.md` before drawing.
+  If a research file proposes a layout or activity, follow it or update it with
+  the reason for changing it.
 - **Publication:** [LOCAL ONLY / A SEPARATE PUBLIC GITHUB REPOSITORY WITH A GITHUB
   PAGES DEMO, ADDED TO THE CENTRAL REPOSITORY AS A SUBMODULE AND TO ITS MAP].
 - **Export:** [NONE / A 7-SECOND FULL-SWITCH MP4 AT 60 FPS / GIF].
 
-Finish only when the checks in `AGENTS.md` pass, including
-`tools/check-composition.cjs`, an actor strip and a real-browser look at noon,
-dusk, night and dawn. Reply with the repository, demo and download links, what
+Look at `tools/preview.cjs` output after every stage. Finish only when the checks
+in `AGENTS.md` pass, including `tools/check-composition.cjs`, the actor strips and
+a real-browser look at noon, dusk, night and dawn. Reply with the repository, demo and download links, what
 was checked, and any real limitations. Keep the reply brief.
