@@ -3,30 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Explore eight animated pixel-art city switches on a rotatable 3D globe. Choose a city, turn day into night, and download its full-switch 60 fps video.">
+<meta name="description" content="Explore eight animated pixel-art city switches on a zoomable pixel world map. Choose a city, turn day into night, and download its full-switch 60 fps video.">
 <title>City switches — a world of day and night</title>
 <link rel="stylesheet" href="globe.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
 <header class="site-header">
-<h1>City switches</h1>
+<h1 class="pixel-text" data-pixel="5">City switches</h1>
 <nav aria-label="Site"><a href="gallery.html">Gallery</a><a href="videos.html">Videos</a><a href="https://github.com/preacherxp/city-switches">Source</a></nav>
 </header>
 <main>
-<p class="intro">Turn the globe, choose a city, and move from day to night.</p>
-<div class="layout">
-<section class="world" aria-label="Explore cities">
-<div class="earth-view" id="earth-view">
-<canvas id="earth" tabindex="0" aria-label="3D globe. Drag or use arrow keys to rotate. Use plus and minus to zoom."></canvas>
-<div id="pins"></div>
+<section class="map-shell" aria-label="World map">
+<div class="map-view" id="map-view">
+<canvas id="map" tabindex="0" aria-label="Pixel world map" aria-describedby="map-help"></canvas>
+<div id="pins" class="pins"></div>
 <div id="cluster-menu" class="cluster-menu" role="group" aria-label="Choose a nearby city" hidden></div>
+<div class="hud hud-place" aria-hidden="true"><span id="map-coords">—</span><span class="scale"><i id="scale-bar"></i><b id="scale-label"></b></span></div>
+<div class="hud hud-zoom" role="toolbar" aria-label="Map controls">
+<button id="zoom-in" type="button" aria-label="Zoom in">+</button>
+<span id="zoom-level" class="zoom-level" aria-hidden="true">×1</span>
+<button id="zoom-out" type="button" aria-label="Zoom out">−</button>
+<button id="show-world" type="button">World</button>
+<button id="show-city" type="button">City</button>
 </div>
-<div class="world-controls" aria-label="Globe controls"><button id="zoom-out" type="button" aria-label="Zoom out">−</button><button id="reset-view" class="reset" type="button">Reset view</button><button id="zoom-in" type="button" aria-label="Zoom in">+</button></div>
-<p class="world-note" id="globe-status" role="status">Loading the globe…</p>
-<nav id="city-list" class="city-list" aria-label="Choose a city"></nav>
+<p class="hud hud-help" id="map-help">Drag to pan · scroll or pinch to zoom · arrows, + and −, 0 for the world</p>
+</div>
+<p class="map-status" id="globe-status" role="status">Loading the map…</p>
 </section>
+<div class="layout">
 <section class="selected-city" aria-labelledby="city-name">
-<div class="city-heading"><h2 id="city-name">Choose a city</h2><span id="country"></span></div>
+<div class="city-heading"><h2 id="city-name" class="pixel-text" data-pixel="4">Choose a city</h2><span id="country"></span></div>
 <p id="description"></p>
 <div id="switch-stage" class="switch-stage">
 <div id="switches"></div>
@@ -36,8 +43,12 @@
 <div class="city-links"><a id="demo-link" href="gallery.html">Standalone demo</a><a id="mp4-link" href="videos.html" download>Download 60 fps MP4</a><a id="repo-link" href="https://github.com/preacherxp/city-switches">City repository</a></div>
 <p id="selection-status" class="sr-only" role="status"></p>
 </section>
+<aside class="city-index">
+<h3 class="list-title">All cities</h3>
+<nav id="city-list" class="city-list" aria-label="Choose a city"></nav>
+</aside>
 </div>
-<noscript><p>JavaScript is needed for the interactive globe. Visit the <a href="gallery.html">city gallery</a> or <a href="videos.html">video downloads</a>.</p></noscript>
+<noscript><p>JavaScript is needed for the interactive map. Visit the <a href="gallery.html">city gallery</a> or <a href="videos.html">video downloads</a>.</p></noscript>
 </main>
 <footer class="site-footer"><span>Map: <a href="https://www.naturalearthdata.com/">Natural Earth</a></span><span>City locations: <a href="https://www.geonames.org/">GeoNames</a></span><a href="https://github.com/preacherxp/city-switches/blob/main/AGENTS.md">Agent guide</a><a href="https://github.com/preacherxp/city-switches/blob/main/INITIAL_PROMPT.md">Create a switch</a></footer>
 <script src="repos/warsaw-switch/city-switch.js"></script>

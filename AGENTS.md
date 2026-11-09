@@ -193,6 +193,6 @@ Use a short, repeatable check and keep evidence of what actually ran.
 - Report the actual repository/demo/download links, what was validated, any
   remaining issues, and any material verification limits. Keep it brief.
 
-## Central globe
+## Central map
 
-Keep `cities.json`, the scene scripts in `index.html`, `gallery.html`, `videos.html`, README and the capture workflow city list in sync when adding a city. Coordinates need a primary location reference. Preserve nearby-marker grouping and the accessible city list. Run `node tools/test-globe.mjs` and the Review globe workflow after globe changes. Each city owns its MP4 export and download link.
+The home page is a zoomable pixel world map (`globe.mjs`, `globe.css`, data in `data/world.json`). Keep `cities.json`, the scene scripts in `index.html`, `gallery.html`, `videos.html`, README and the capture workflow city list in sync when adding a city. Coordinates need a primary location reference. Check that the map draws the city's name correctly, accents included, and that its marker stands apart from its neighbours when selected. Preserve nearby-marker grouping and the accessible city list. Run `node tools/test-globe.mjs` and the Review globe workflow after map changes. Each city owns its MP4 export and download link.

@@ -3,7 +3,7 @@
 Interactive pixel-art city scenes inside a glass day/night switch. Each city is
 an independent repository and GitHub Pages site, pinned here as a Git submodule.
 
-[Explore the 3D globe](https://preacherxp.github.io/city-switches/) · [Open the gallery](https://preacherxp.github.io/city-switches/gallery.html)
+[Explore the pixel world map](https://preacherxp.github.io/city-switches/) · [Open the gallery](https://preacherxp.github.io/city-switches/gallery.html)
 
 | City | Repository | Demo | 60 fps export |
 | --- | --- | --- | --- |
@@ -65,11 +65,13 @@ The gallery loads one compatible engine and the city scene files directly from
 the submodules. Keep the engine copies compatible and test all cities after an
 engine change. Each city's own demo continues to load its own engine.
 
-## Globe
+## Map
 
-The native WebGL globe uses a local Natural Earth land map and GeoNames city centres; see [data sources](data/README.md). Drag, keyboard arrows and zoom buttons work without map services or API keys. Nearby markers are grouped, and every city is also available in an accessible list. The selected panel runs the original switch directly from its submodule. `cities.json` contains the catalogue and coordinates.
+The home page is a flat, zoomable pixel-art world map (`globe.mjs`, `globe.css`). It is painted one logical pixel per cell into a canvas and scaled up without smoothing, like the switches. Land, lakes, rivers, borders, deserts and mountain ranges come from local Natural Earth 1:50m data; city centres come from GeoNames. See [data sources](data/README.md). The map's colours follow the selected switch from day to night, and city footprints light up after dark.
 
-Run the **Review globe** workflow for actual-browser checks of all eight selections, grouped pins, dragging, keyboard controls, zoom, saved switch state, reduced motion, responsive layouts and video playback.
+Drag or use the arrow keys to pan; scroll, pinch, double-click, `+`/`−` or the buttons to zoom from the whole world down to neighbouring cities. `0` shows the whole world and `Home` returns to the selected city. Nearby markers are grouped; selecting a group zooms in until its cities separate. Every city is also available in an accessible list. The selected panel runs the original switch directly from its submodule. `cities.json` contains the catalogue and coordinates. No map service or API key is used.
+
+Run `node tools/test-globe.mjs` and the **Review globe** workflow for actual-browser checks of all eight selections, grouped markers, dragging, keyboard and wheel zoom, the map following night, saved switch state, reduced motion, responsive layouts and video playback.
 
 ## Attribution
 
