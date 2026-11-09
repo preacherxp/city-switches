@@ -55,6 +55,7 @@ const {chromium}=require('playwright');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`overflow at ${width}`);
    const pins=await page.locator('.pin').evaluateAll(elements=>elements.map(el=>{const r=el.getBoundingClientRect();return{x:r.x,y:r.y,w:r.width,h:r.height};}));
    for(let i=0;i<pins.length;i++)for(let j=i+1;j<pins.length;j++)assert.ok(Math.hypot(pins[i].x-pins[j].x,pins[i].y-pins[j].y)>25,'overlapping pins');
+   await page.locator('#switch-stage').scrollIntoViewIfNeeded();await page.waitForTimeout(350);
    await page.screenshot({path:`capture/globe/${name}.png`,fullPage:true});
    const stage=await page.locator('#switch-stage').boundingBox();
    const control=await page.getByRole('switch').boundingBox();
@@ -65,9 +66,9 @@ const {chromium}=require('playwright');
   assert.equal(await page.locator('#city-name').textContent(),'Lisbon');
   await page.goto('http://127.0.0.1:8080/videos.html',{waitUntil:'networkidle'});
   assert.equal(await page.locator('video').count(),8);
-  await page.locator('video').first().evaluate(video=>video.play());await page.waitForTimeout(300);
-  assert.ok(await page.locator('video').first().evaluate(video=>video.currentTime>0));
+  await page.locator('video').first().evaluate(video=>{video.play().catch(error=>{video.dataset.playError=error.message;});});
+  await page.waitForFunction(()=>document.querySelector('video').currentTime>0);
   assert.deepEqual(errors,[]);
   fs.writeFileSync('capture/globe/checks.json',JSON.stringify({cities:8,webgl:true,clusterSelection:true,keyboard:true,drag:true,zoom:true,persistence:true,reducedMotion:true,videoPlayback:true,widths:[1280,820,390,320],errors},null,2));
- }catch(error){await page.screenshot({path:'capture/globe/failure.png',fullPage:true}).catch(()=>{});fs.writeFileSync('capture/globe/failure.json',JSON.stringify({message:error.message,errors},null,2));throw error;}finally{await browser.close();}
+ }catch(error){await page.screenshot({path:'capture/globe/failure.png',fullPage:true}).catch(()=>{});fs.writeFileSync('capture/globe/failure.json',JSON.stringify({message:error.message,errors,media:await page.locator('video').evaluateAll(videos=>videos.map(v=>({src:v.currentSrc,readyState:v.readyState,networkState:v.networkState,error:v.error?.message,playError:v.dataset.playError,time:v.currentTime})))},null,2));throw error;}finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});
