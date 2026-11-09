@@ -4,6 +4,7 @@ const {chromium}=require('playwright');
 (async()=>{
  const browser=await chromium.launch({args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
  const page=await browser.newPage({viewport:{width:1280,height:960},colorScheme:'light',reducedMotion:'reduce'});
+ page.setDefaultTimeout(15000);page.setDefaultNavigationTimeout(20000);
  const errors=[];
  page.on('pageerror',error=>errors.push(error.message));
  page.on('response',response=>{if(response.status()>=400)errors.push(`${response.status()}: ${response.url()}`);});
@@ -11,6 +12,8 @@ const {chromium}=require('playwright');
  try{
   await page.goto('http://127.0.0.1:8080/#zabrze',{waitUntil:'networkidle'});
   await page.waitForSelector('#earth[data-ready="true"]');
+  await page.screenshot({path:'capture/globe/initial.png',fullPage:true});
+  console.log('Globe renderer ready');
   assert.equal(await page.locator('.city-button').count(),8);
   const grouped=page.locator('.pin:not(.single)').first();
   await grouped.click();
@@ -19,6 +22,7 @@ const {chromium}=require('playwright');
   assert.equal(await page.locator('#cluster-menu').isVisible(),false);
   const cities=JSON.parse(fs.readFileSync('cities.json'));
   for(const city of cities){
+   console.log('Selecting',city.id);
    await page.locator(`[data-city="${city.id}"]`).click();
    await page.waitForFunction(id=>document.querySelector(`${id}-switch`).gl,city.id);
    assert.equal(await page.locator('#city-name').textContent(),city.name);
@@ -65,5 +69,5 @@ const {chromium}=require('playwright');
   assert.ok(await page.locator('video').first().evaluate(video=>video.currentTime>0));
   assert.deepEqual(errors,[]);
   fs.writeFileSync('capture/globe/checks.json',JSON.stringify({cities:8,webgl:true,clusterSelection:true,keyboard:true,drag:true,zoom:true,persistence:true,reducedMotion:true,videoPlayback:true,widths:[1280,820,390,320],errors},null,2));
- }finally{await browser.close();}
+ }catch(error){await page.screenshot({path:'capture/globe/failure.png',fullPage:true}).catch(()=>{});fs.writeFileSync('capture/globe/failure.json',JSON.stringify({message:error.message,errors},null,2));throw error;}finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

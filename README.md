@@ -7,14 +7,14 @@ an independent repository and GitHub Pages site, pinned here as a Git submodule.
 
 | City | Repository | Demo | 60 fps export |
 | --- | --- | --- | --- |
-| Warsaw | [warsaw-switch](https://github.com/preacherxp/warsaw-switch) | [Open](https://preacherxp.github.io/warsaw-switch/)  [MP4](https://preacherxp.github.io/warsaw-switch/warsaw-day-night-60fps.mp4) |
-| Berlin | [berlin-switch](https://github.com/preacherxp/berlin-switch) | [Open](https://preacherxp.github.io/berlin-switch/)  [MP4](https://preacherxp.github.io/berlin-switch/berlin-day-night-60fps.mp4) |
-| Lisbon | [lisbon-switch](https://github.com/preacherxp/lisbon-switch) | [Open](https://preacherxp.github.io/lisbon-switch/)  [MP4](https://preacherxp.github.io/lisbon-switch/lisbon-day-night-60fps.mp4) |
-| Gliwice | [gliwice-switch](https://github.com/preacherxp/gliwice-switch) | [Open](https://preacherxp.github.io/gliwice-switch/)  [MP4](https://preacherxp.github.io/gliwice-switch/gliwice-day-night-60fps.mp4) |
-| Częstochowa | [czestochowa-switch](https://github.com/preacherxp/czestochowa-switch) | [Open](https://preacherxp.github.io/czestochowa-switch/)  [MP4](https://preacherxp.github.io/czestochowa-switch/czestochowa-day-night-60fps.mp4) |
-| Katowice | [katowice-switch](https://github.com/preacherxp/katowice-switch) | [Open](https://preacherxp.github.io/katowice-switch/)  [MP4](https://preacherxp.github.io/katowice-switch/katowice-day-night-60fps.mp4) |
-| Remscheid | [remscheid-switch](https://github.com/preacherxp/remscheid-switch) | [Open](https://preacherxp.github.io/remscheid-switch/)  [MP4](https://preacherxp.github.io/remscheid-switch/remscheid-day-night-60fps.mp4) |
-| Zabrze | [zabrze-switch](https://github.com/preacherxp/zabrze-switch) | [Open](https://preacherxp.github.io/zabrze-switch/)  [MP4](https://preacherxp.github.io/zabrze-switch/zabrze-day-night-60fps.mp4) |
+| Warsaw | [warsaw-switch](https://github.com/preacherxp/warsaw-switch) | [Open](https://preacherxp.github.io/warsaw-switch/) | [MP4](https://preacherxp.github.io/warsaw-switch/warsaw-day-night-60fps.mp4) |
+| Berlin | [berlin-switch](https://github.com/preacherxp/berlin-switch) | [Open](https://preacherxp.github.io/berlin-switch/) | [MP4](https://preacherxp.github.io/berlin-switch/berlin-day-night-60fps.mp4) |
+| Lisbon | [lisbon-switch](https://github.com/preacherxp/lisbon-switch) | [Open](https://preacherxp.github.io/lisbon-switch/) | [MP4](https://preacherxp.github.io/lisbon-switch/lisbon-day-night-60fps.mp4) |
+| Gliwice | [gliwice-switch](https://github.com/preacherxp/gliwice-switch) | [Open](https://preacherxp.github.io/gliwice-switch/) | [MP4](https://preacherxp.github.io/gliwice-switch/gliwice-day-night-60fps.mp4) |
+| Częstochowa | [czestochowa-switch](https://github.com/preacherxp/czestochowa-switch) | [Open](https://preacherxp.github.io/czestochowa-switch/) | [MP4](https://preacherxp.github.io/czestochowa-switch/czestochowa-day-night-60fps.mp4) |
+| Katowice | [katowice-switch](https://github.com/preacherxp/katowice-switch) | [Open](https://preacherxp.github.io/katowice-switch/) | [MP4](https://preacherxp.github.io/katowice-switch/katowice-day-night-60fps.mp4) |
+| Remscheid | [remscheid-switch](https://github.com/preacherxp/remscheid-switch) | [Open](https://preacherxp.github.io/remscheid-switch/) | [MP4](https://preacherxp.github.io/remscheid-switch/remscheid-day-night-60fps.mp4) |
+| Zabrze | [zabrze-switch](https://github.com/preacherxp/zabrze-switch) | [Open](https://preacherxp.github.io/zabrze-switch/) | [MP4](https://preacherxp.github.io/zabrze-switch/zabrze-day-night-60fps.mp4) |
 
 [Download the 60 fps full-switch videos](https://preacherxp.github.io/city-switches/videos.html)
 
