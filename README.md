@@ -50,7 +50,7 @@ node tools/test-globe.mjs
 switch's visible window, when later scenery paints over a sign, or when a light
 is in a different state at the two noons the lens passes through.
 
-The **Review and capture switches** GitHub Actions workflow can be run manually
+Each city repository's **Export video** workflow re-records its MP4 automatically whenever the scene changes on `main`, and commits it. The central **Review and capture switches** GitHub Actions workflow can still be run manually
 to capture each complete control as a seven-second H.264 MP4 at 60 fps. Recording
 dependencies are installed only in the runner. The static demos stay buildless. Final MP4s are kept in each city’s own repository and linked from `videos.html`.
 

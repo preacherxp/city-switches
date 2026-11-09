@@ -2,10 +2,17 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('playwright');
 
+// Captures the real full switch: input, persistence, layout and contrast checks, then 420 frames
+// at exactly 1/60 s each. Runs from the central repository (default) or inside a city repository:
+//   node tools/capture-switch.cjs <city>                          central: serves repos/<city>-switch/
+//   CAPTURE_ROOT=. CAPTURE_PATH=/ node tools/capture-switch.cjs <city>   city repository
 const city = process.argv[2];
-assert.ok(/^[a-z][a-z0-9-]*$/.test(city) && fs.existsSync(`repos/${city}-switch/${city}.js`), 'provide an initialized city slug');
+const root = process.env.CAPTURE_ROOT || `repos/${city}-switch`;
+const pagePath = process.env.CAPTURE_PATH || `/repos/${city}-switch/`;
+assert.ok(/^[a-z][a-z0-9-]*$/.test(city) && fs.existsSync(`${root}/${city}.js`), 'provide an initialized city slug');
 const tag = `${city}-switch`;
 const out = `capture/${city}`;
+// Waits poll on a timer: with software WebGL, animation-frame polling can starve and time out.
 fs.mkdirSync(`${out}/frames`, { recursive: true });
 
 (async () => {
@@ -15,34 +22,34 @@ fs.mkdirSync(`${out}/frames`, { recursive: true });
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('response', (response) => { if (response.status() >= 400) errors.push(`${response.status()}: ${response.url()}`); });
   try {
-    await page.goto(`http://127.0.0.1:8080/repos/${city}-switch/`, { waitUntil: 'networkidle' });
-    await page.waitForFunction((tag) => document.querySelector(tag).gl, tag);
+    await page.goto(`http://127.0.0.1:8080${pagePath}`, { waitUntil: 'networkidle' });
+    await page.waitForFunction((tag) => document.querySelector(tag).gl, tag, { polling: 100 });
     const control = page.getByRole('switch');
     await control.click();
-    await page.waitForFunction((tag) => document.querySelector(tag).checked, tag);
+    await page.waitForFunction((tag) => document.querySelector(tag).checked, tag, { polling: 100 });
     await control.press('Home');
-    await page.waitForFunction((tag) => document.querySelector(tag).position < .001, tag);
+    await page.waitForFunction((tag) => document.querySelector(tag).position < .001, tag, { polling: 100 });
     await control.press('ArrowRight');
-    await page.waitForFunction((tag) => document.querySelector(tag).position > .01, tag);
+    await page.waitForFunction((tag) => document.querySelector(tag).position > .01, tag, { polling: 100 });
     await control.press('End');
-    await page.waitForFunction((tag) => document.querySelector(tag).checked, tag);
+    await page.waitForFunction((tag) => document.querySelector(tag).checked, tag, { polling: 100 });
     await control.press('Space');
-    await page.waitForFunction((tag) => !document.querySelector(tag).checked, tag);
+    await page.waitForFunction((tag) => !document.querySelector(tag).checked, tag, { polling: 100 });
     await page.locator(tag).evaluate((el) => el.jump(false));
     const bounds = await control.boundingBox();
     await page.mouse.move(bounds.x + bounds.width * .25, bounds.y + bounds.height * .5);
     await page.mouse.down();
     await page.mouse.move(bounds.x + bounds.width * .8, bounds.y + bounds.height * .5, { steps: 12 });
     await page.mouse.up();
-    await page.waitForFunction((tag) => document.querySelector(tag).position > .6, tag);
+    await page.waitForFunction((tag) => document.querySelector(tag).position > .6, tag, { polling: 100 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await control.press('Home');
-    await page.waitForFunction((tag) => document.querySelector(tag).position === 0, tag);
+    await page.waitForFunction((tag) => document.querySelector(tag).position === 0, tag, { polling: 100 });
     await control.press('End');
-    await page.waitForFunction((tag) => document.querySelector(tag).checked, tag);
+    await page.waitForFunction((tag) => document.querySelector(tag).checked, tag, { polling: 100 });
     assert.equal(await control.getAttribute('aria-checked'), 'true');
     await page.reload({ waitUntil: 'networkidle' });
-    await page.waitForFunction((tag) => document.querySelector(tag).checked, tag);
+    await page.waitForFunction((tag) => document.querySelector(tag).checked, tag, { polling: 100 });
     await page.emulateMedia({ reducedMotion: 'no-preference' });
 
     for (const [name, width, height] of [['desktop', 960, 600], ['phone', 390, 844], ['narrow', 320, 680]]) {
