@@ -21,7 +21,7 @@ jobs:
       - name: Install browser
         run: |
           npm install --prefix "$RUNNER_TEMP/review" playwright@1.56.1
-          "$RUNNER_TEMP/review/node_modules/.bin/playwright" install --with-deps chromium
+          "$RUNNER_TEMP/review/node_modules/.bin/playwright" install --with-deps chrome
       - name: Review globe, switches and videos
         run: |
           python3 -m http.server 8080 > "$RUNNER_TEMP/http.log" 2>&1 &
