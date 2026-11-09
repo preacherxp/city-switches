@@ -1,0 +1,15 @@
+[submodule "repos/warsaw-switch"]
+	path = repos/warsaw-switch
+	url = https://github.com/preacherxp/warsaw-switch.git
+[submodule "repos/berlin-switch"]
+	path = repos/berlin-switch
+	url = https://github.com/preacherxp/berlin-switch.git
+[submodule "repos/lisbon-switch"]
+	path = repos/lisbon-switch
+	url = https://github.com/preacherxp/lisbon-switch.git
+[submodule "repos/gliwice-switch"]
+	path = repos/gliwice-switch
+	url = https://github.com/preacherxp/gliwice-switch.git
+[submodule "repos/czestochowa-switch"]
+	path = repos/czestochowa-switch
+	url = https://github.com/preacherxp/czestochowa-switch.git
