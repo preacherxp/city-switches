@@ -82,9 +82,19 @@ fs.mkdirSync(`${out}/frames`, { recursive: true });
 
     await page.setViewportSize({ width: 800, height: 500 });
     await page.addStyleTag({ content: 'section { height: 500px; min-height: 500px; padding: 40px 24px; gap: 24px; } footer { display: none; } .switch { width: 640px; }' });
-    await page.locator(tag).evaluate((el) => { el.jump(false); cancelAnimationFrame(el.raf); el.raf = 0; });
+    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await page.locator(tag).evaluate((el) => {
+      el.jump(false);
+      cancelAnimationFrame(el.raf);
+      el.raf = 0;
+      // Screenshots must advance only the requested frame, regardless of capture speed.
+      el.wake = () => {};
+      el.frame = () => {};
+      el.world = new el.world.constructor();
+      el.time = 0;
+    });
     for (let frame = 0; frame < 420; frame++) {
-      await page.locator(tag).evaluate((el, frame) => {
+      const sceneTime = await page.locator(tag).evaluate((el, frame) => {
         const p = frame / 419;
         const ease = (t) => t * t * (3 - 2 * t);
         el.branch = p >= .58 ? 'am' : 'pm';
@@ -98,12 +108,14 @@ fs.mkdirSync(`${out}/frames`, { recursive: true });
         el.stepWater(1 / 60, false);
         el.emitScrub();
         el.draw();
+        return el.world.t;
       }, frame);
+      assert.ok(Math.abs(sceneTime - (frame + 1) / 60) < 1e-6, `${city}: capture time drifted`);
       await page.screenshot({ path: `${out}/frames/${String(frame).padStart(3, '0')}.png` });
       if (frame % 60 === 0) console.log(`${city}: ${frame + 1}/420 full-switch frames captured`);
     }
     assert.deepEqual(errors, [], 'no runtime errors or missing assets');
-    fs.writeFileSync(`${out}/checks.json`, JSON.stringify({ city, sourceFrames: 420, sourceFps: 60, seconds: 7, outputWidth: 800, outputHeight: 500, readoutContrast: true, pointer: true, drag: true, keyboard: true, reducedMotion: true, persistence: true, widths: [960, 390, 320], errors }, null, 2));
+    fs.writeFileSync(`${out}/checks.json`, JSON.stringify({ city, sourceFrames: 420, sourceFps: 60, seconds: 7, outputWidth: 800, outputHeight: 500, readoutContrast: true, deterministicTime: true, pointer: true, drag: true, keyboard: true, reducedMotion: true, persistence: true, widths: [960, 390, 320], errors }, null, 2));
     console.log(`${city}: real WebGL control, input, persistence, reduced motion and responsive checks passed`);
   } finally {
     await browser.close();
