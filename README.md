@@ -38,6 +38,8 @@ real-browser validation, full-switch video capture, and publication.
 
 ## Validate
 
+[Review findings and validation evidence](REVIEW.md)
+
 ```sh
 node tools/validate-switches.cjs
 node tools/test-globe.mjs
