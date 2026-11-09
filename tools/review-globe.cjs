@@ -61,7 +61,8 @@ const origin=process.env.ORIGIN||'http://127.0.0.1:8080';
   await page.getByRole('switch').press('Home');await page.waitForTimeout(900);
 
   await page.locator('[data-city="gliwice"]').click();
-  await page.getByRole('switch').press('End');
+  // The lens travels even under reduced motion, so wait for it to arrive
+  await page.getByRole('switch').press('End');await page.waitForFunction(()=>document.querySelector('gliwice-switch').checked);
   await page.locator('[data-city="zabrze"]').click();
   await page.locator('[data-city="gliwice"]').click();
   assert.equal(await page.getByRole('switch').getAttribute('aria-checked'),'true');
