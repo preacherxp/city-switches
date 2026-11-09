@@ -54,6 +54,8 @@ const {chromium}=require('playwright');
   for(const [name,width,height] of [['desktop',1280,960],['tablet',820,1000],['phone',390,844],['narrow',320,680]]){
    await page.setViewportSize({width,height});await page.waitForTimeout(250);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`overflow at ${width}`);
+   const listFits=await page.locator('.city-button').evaluateAll(buttons=>buttons.every(button=>{const parent=button.getBoundingClientRect();return [...button.children].every(child=>{const box=child.getBoundingClientRect();return box.left>=parent.left&&box.right<=parent.right+1;});}));
+   assert.ok(listFits,`city labels overlap at ${width}px`);
    const pins=await page.locator('.pin').evaluateAll(elements=>elements.map(el=>{const r=el.getBoundingClientRect();return{x:r.x,y:r.y,w:r.width,h:r.height};}));
    for(let i=0;i<pins.length;i++)for(let j=i+1;j<pins.length;j++)assert.ok(Math.hypot(pins[i].x-pins[j].x,pins[i].y-pins[j].y)>25,'overlapping pins');
    await page.locator('#switch-stage').scrollIntoViewIfNeeded();await page.waitForTimeout(350);

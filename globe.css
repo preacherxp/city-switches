@@ -73,3 +73,7 @@ button:focus-visible, a:focus-visible, canvas:focus-visible { outline: 2px solid
   .switch-stage { padding: 36px 22px 26px; gap: 28px; }
   .site-footer { margin-top: 32px; }
 }
+@media (max-width: 420px) {
+  .city-button { display: block; }
+  .city-button small { display: block; margin-top: 2px; }
+}

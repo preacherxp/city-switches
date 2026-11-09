@@ -35,7 +35,10 @@ cleanly and keep the intended depth throughout its cycle.
 Provide the scene, an independent demo, a short README with reference links and
 usage, and a small engine smoke test. Add it to the central gallery and, when
 requested, register its separate Git repository as a central-repo submodule.
-Preserve existing attribution and any unrelated user changes.
+Update the central globe catalogue, scene scripts, gallery, video page and README
+when those files exist, including sourced city coordinates. Commit the final MP4
+in its city repository and link it from the demo and README when an export is
+requested. Preserve existing attribution and any unrelated user changes.
 
 Before finishing, run syntax and asset checks and the scene test. In a real
 WebGL browser, inspect desktop and phone layouts at noon, dusk, night, and dawn,
