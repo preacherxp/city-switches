@@ -144,11 +144,13 @@ const PALETTE = {
 };
 const hexRgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 const PALETTE_RGB = Object.fromEntries(Object.entries(PALETTE).map(([key, pair]) => [key, pair.map(hexRgb)]));
+// The map is painted in colour roles; a lookup table turns roles into the colours of the hour
+const ROLE = Object.fromEntries(Object.keys(PALETTE).map((key, i) => [key, i]));
 function paletteAt(dark, duskHex) {
-  const tint = hexRgb(duskHex || '#967c69'), dusk = 4 * dark * (1 - dark) * 0.42, out = {};
+  const tint = hexRgb(duskHex || '#967c69'), dusk = 4 * dark * (1 - dark) * 0.42, out = new Uint32Array(256);
   for (const [key, [day, night]] of Object.entries(PALETTE_RGB)) {
     const c = day.map((v, i) => v + (night[i] - v) * dark).map((v, i) => key === 'lit' || key === 'lit2' || key === 'selected' ? v : v + (tint[i] - v) * dusk);
-    out[key] = (255 << 24 | Math.round(c[2]) << 16 | Math.round(c[1]) << 8 | Math.round(c[0])) >>> 0;
+    out[ROLE[key]] = (255 << 24 | Math.round(c[2]) << 16 | Math.round(c[1]) << 8 | Math.round(c[0])) >>> 0;
   }
   return out;
 }
@@ -229,7 +231,7 @@ function createMap(view, canvas, options) {
   const region = document.createElement('canvas'), regionCtx = region.getContext('2d', { willReadFrequently: true });
   const top = mercator(0, LAT_TOP).y, bottom = mercator(0, LAT_BOTTOM).y;
   const MARGIN = 8;
-  let world, W = 0, H = 0, P = 2, scale = 0, cx = 0.54, cy = 0.33, image, pixels, type, dist, desert, dark = 0, dusk, blink = 0;
+  let world, W = 0, H = 0, P = 2, scale = 0, cx = 0.54, cy = 0.33, image, pixels, roles, base, baseKey = '', type, dist, desert, dark = 0, dusk, blink = 0, visible = true, stale = false;
   let frame = 0, flight = 0, markers = [];
   const state = { get scale() { return scale; }, get minScale() { return minScale(); } };
 
@@ -251,12 +253,18 @@ function createMap(view, canvas, options) {
     canvas.style.width = `${W * P}px`; canvas.style.height = `${H * P}px`;
     region.width = mask.width = W + MARGIN * 2; region.height = mask.height = H + MARGIN * 2;
     image = ctx.createImageData(W, H); pixels = new Uint32Array(image.data.buffer);
+    roles = new Uint8Array(W * H); base = new Uint8Array(W * H); baseKey = '';
     type = new Uint8Array(mask.width * mask.height); dist = new Uint8Array(type.length); desert = new Uint8Array(type.length);
     if (wasMin) scale = minScale();
     clampView(); request();
   }
 
-  function request() { if (!frame) frame = requestAnimationFrame(() => { frame = 0; render(); }); }
+  // Off screen the map only remembers that it is out of date
+  function request() {
+    if (!visible) { stale = true; return; }
+    if (!frame) frame = requestAnimationFrame(() => { frame = 0; render(); });
+  }
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible && stale) { stale = false; request(); } }).observe(view);
 
   function rasterize(S, ox, oy) {
     const level = LOD.findIndex((tolerance) => tolerance * S <= 0.6);
@@ -376,7 +384,7 @@ function createMap(view, canvas, options) {
           if (d > 3 && (meridian[i] || parallel[j]) && ((gx + gy) & 1)) colour = colours.grid;
           else if (d > 4 && hash(gx >> 1, gy) < 0.004) colour = colours.wave;
         }
-        pixels[j * W + i] = colour;
+        roles[j * W + i] = colour;
       }
     }
     mountains(S, ox, oy, colours);
@@ -400,7 +408,7 @@ function createMap(view, canvas, options) {
     }
   }
 
-  const put = (x, y, colour) => { if (x >= 0 && y >= 0 && x < W && y < H) pixels[y * W + x] = colour; };
+  const put = (x, y, colour) => { if (x >= 0 && y >= 0 && x < W && y < H) roles[y * W + x] = colour; };
   function sprite(rows, x, y, map) {
     rows.forEach((row, dy) => { for (let dx = 0; dx < row.length; dx++) { const c = map[row[dx]]; if (c !== undefined) put(x + dx, y + dy, c); } });
   }
@@ -423,17 +431,21 @@ function createMap(view, canvas, options) {
       const h = hash(gx + 11, gy - 5), threshold = (BAYER[(gy & 3) * 4 + (gx & 3)] + 0.5) / 16;
       let colour = street ? colours.street : h < 0.45 ? colours.roofA : h < 0.75 ? colours.roofB : colours.roofC;
       if (!street && hash(gx - 3, gy + 17) < 0.45 && dark > threshold) colour = h < 0.2 ? colours.lit2 : colours.lit;
-      pixels[py * W + px] = colour;
+      roles[py * W + px] = colour;
     }
   }
 
   function render() {
     if (!W || !H) return;
     const S = Math.round(scale), ox = Math.round(cx * S - W / 2), oy = Math.round(cy * S - H / 2);
-    const colours = paletteAt(dark, dusk);
-    rasterize(S, ox, oy);
-    classify();
-    paint(S, ox, oy, colours);
+    const colours = ROLE, key = `${S},${ox},${oy},${W},${H},${!!world}`;
+    // Land, sea and terrain only change with the view; a new hour just recolours them
+    if (key !== baseKey) {
+      rasterize(S, ox, oy);
+      classify();
+      paint(S, ox, oy, colours);
+      base.set(roles); baseKey = key;
+    } else roles.set(base);
 
     // Cities: one marker per visible copy of the world, grouped when close
     const kmPerCell = 40075 / S;
@@ -493,6 +505,8 @@ function createMap(view, canvas, options) {
         break;
       }
     }
+    const lut = paletteAt(dark, dusk);
+    for (let i = 0; i < roles.length; i++) pixels[i] = lut[roles[i]];
     ctx.putImageData(image, 0, 0);
     options.onRender({ S, ox, oy, W, H, P, markers, kmPerCell, center: unmercator(cx, cy) });
   }
@@ -551,7 +565,9 @@ async function start() {
 
   function read(entry) {
     $('switch-stage').style.setProperty('--dark', entry.dark.toFixed(3));
-    const hour = entry.hour % 24; $('clock').textContent = `${String(Math.floor(hour)).padStart(2, '0')}:${String(Math.floor(hour % 1 * 60)).padStart(2, '0')}`;
+    const hour = entry.hour % 24, hh = String(Math.floor(hour)).padStart(2, '0'), mm = String(Math.floor(hour % 1 * 60)).padStart(2, '0');
+    const clock = $('clock');
+    if (clock.dataset.time !== `${hh}${mm}`) { clock.dataset.time = `${hh}${mm}`; clock.innerHTML = `${hh}<span class="colon">:</span>${mm}`; }
     $('phase').textContent = phase(hour);
     map.setDark(entry.dark, selected?.dusk);
   }

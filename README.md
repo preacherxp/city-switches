@@ -42,8 +42,13 @@ real-browser validation, full-switch video capture, and publication.
 
 ```sh
 node tools/validate-switches.cjs
+node tools/check-composition.cjs
 node tools/test-globe.mjs
 ```
+
+`check-composition.cjs` builds every real scene and fails when a sign leaves the
+switch's visible window, when later scenery paints over a sign, or when a light
+is in a different state at the two noons the lens passes through.
 
 The **Review and capture switches** GitHub Actions workflow can be run manually
 to capture each complete control as a seven-second H.264 MP4 at 60 fps. Recording
