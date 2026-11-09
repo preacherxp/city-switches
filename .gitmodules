@@ -19,3 +19,6 @@
 [submodule "repos/remscheid-switch"]
 	path = repos/remscheid-switch
 	url = https://github.com/preacherxp/remscheid-switch.git
+[submodule "repos/zabrze-switch"]
+	path = repos/zabrze-switch
+	url = https://github.com/preacherxp/zabrze-switch.git
