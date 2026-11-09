@@ -12,8 +12,12 @@ an independent repository and GitHub Pages site, pinned here as a Git submodule.
 | Lisbon | [lisbon-switch](https://github.com/preacherxp/lisbon-switch) | [Open](https://preacherxp.github.io/lisbon-switch/) |
 | Gliwice | [gliwice-switch](https://github.com/preacherxp/gliwice-switch) | [Open](https://preacherxp.github.io/gliwice-switch/) |
 | Częstochowa | [czestochowa-switch](https://github.com/preacherxp/czestochowa-switch) | [Open](https://preacherxp.github.io/czestochowa-switch/) |
+| Katowice | [katowice-switch](https://github.com/preacherxp/katowice-switch) | [Open](https://preacherxp.github.io/katowice-switch/) |
+| Remscheid | [remscheid-switch](https://github.com/preacherxp/remscheid-switch) | [Open](https://preacherxp.github.io/remscheid-switch/) |
+
 
 [Download the full animated Gliwice switch GIF](https://preacherxp.github.io/gliwice-switch/gliwice-day-night.gif)
+
 
 ## Run locally
 
@@ -39,6 +43,10 @@ real-browser validation, full-switch GIF capture, and publication.
 node tools/validate-switches.cjs
 ```
 
+The **Review and capture switches** GitHub Actions workflow can be run manually
+to capture each complete control as a seven-second H.264 MP4 at 60 fps. Recording
+dependencies are installed only in the runner. The static demos stay buildless.
+
 This checks syntax, standalone assets, matching engine copies, the full time
 cycle, valid pixel painting, and reduced motion for every city. Browser review
 also captures desktop, phone, narrow-screen, intermediate-lens, and dawn states;
@@ -51,7 +59,7 @@ Then commit that submodule's new pointer in this repository. Pinned submodules
 keep the gallery reproducible; they do not automatically follow the newest city
 commit. All submodule URLs use public HTTPS repositories for GitHub Pages.
 
-The gallery loads one compatible engine and the five scene files directly from
+The gallery loads one compatible engine and the city scene files directly from
 the submodules. Keep the engine copies compatible and test all cities after an
 engine change. Each city's own demo continues to load its own engine.
 

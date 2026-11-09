@@ -48,8 +48,8 @@ PUBLISH ITS DEMO ON GITHUB PAGES]. If publication is requested, verify the deplo
 commit, successful deployment, live HTML, and assets. Commit the central repo's
 submodule pointer only after the referenced city commit exists remotely.
 
-**Optional shareable preview:** [NONE / A 7-SECOND LOOPING GIF OF THE FULL SWITCH].
-For a GIF, record the actual browser-rendered control, including its frame,
+**Optional shareable preview:** [NONE / A 7-SECOND FULL-SWITCH MP4 AT 60 FPS / GIF].
+For an export, record the actual browser-rendered control, including its frame,
 moving glass lens, animated city, and day/night return. A city-only animation
 does not satisfy a full-switch export.
 

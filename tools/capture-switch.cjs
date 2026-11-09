@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const { chromium } = require('playwright');
 
 const city = process.argv[2];
-assert.ok(['warsaw', 'berlin', 'lisbon', 'gliwice', 'czestochowa'].includes(city));
+assert.ok(/^[a-z][a-z0-9-]*$/.test(city) && fs.existsSync(`repos/${city}-switch/${city}.js`), 'provide an initialized city slug');
 const tag = `${city}-switch`;
 const out = `capture/${city}`;
 fs.mkdirSync(`${out}/frames`, { recursive: true });
@@ -58,6 +58,19 @@ fs.mkdirSync(`${out}/frames`, { recursive: true });
           el.emitScrub();
         }, { position, morning });
         await page.waitForTimeout(350);
+        const contrast = await page.evaluate(() => {
+          const lightness = (color) => {
+            const rgb = color.match(/[\d.]+/g).slice(0, 3).map(Number).map((value) => value / 255);
+            const linear = rgb.map((value) => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4);
+            return linear[0] * .2126 + linear[1] * .7152 + linear[2] * .0722;
+          };
+          const background = lightness(getComputedStyle(document.querySelector('.read')).backgroundColor);
+          return ['.clock', '.place b', '.place span'].map((selector) => {
+            const foreground = lightness(getComputedStyle(document.querySelector(selector)).color);
+            return (Math.max(background, foreground) + .05) / (Math.min(background, foreground) + .05);
+          });
+        });
+        assert.ok(contrast.every((ratio) => ratio >= 4.5), `${city}: readout contrast below 4.5:1`);
         await page.evaluate(() => scrollTo(0, 0));
         await page.locator('section').screenshot({ path: `${out}/${name}-${phase}.png` });
         const box = await page.locator(tag).boundingBox();
@@ -67,8 +80,8 @@ fs.mkdirSync(`${out}/frames`, { recursive: true });
       }
     }
 
-    await page.setViewportSize({ width: 960, height: 600 });
-    await page.addStyleTag({ content: 'section { height: 600px; min-height: 600px; padding: 48px 24px; gap: 32px; } footer { display: none; } .switch { width: 760px; }' });
+    await page.setViewportSize({ width: 800, height: 500 });
+    await page.addStyleTag({ content: 'section { height: 500px; min-height: 500px; padding: 40px 24px; gap: 24px; } footer { display: none; } .switch { width: 640px; }' });
     await page.locator(tag).evaluate((el) => { el.jump(false); cancelAnimationFrame(el.raf); el.raf = 0; });
     for (let frame = 0; frame < 420; frame++) {
       await page.locator(tag).evaluate((el, frame) => {
@@ -90,7 +103,7 @@ fs.mkdirSync(`${out}/frames`, { recursive: true });
       if (frame % 60 === 0) console.log(`${city}: ${frame + 1}/420 full-switch frames captured`);
     }
     assert.deepEqual(errors, [], 'no runtime errors or missing assets');
-    fs.writeFileSync(`${out}/checks.json`, JSON.stringify({ city, sourceFrames: 420, sourceFps: 60, seconds: 7, pointer: true, drag: true, keyboard: true, reducedMotion: true, persistence: true, widths: [960, 390, 320], errors }, null, 2));
+    fs.writeFileSync(`${out}/checks.json`, JSON.stringify({ city, sourceFrames: 420, sourceFps: 60, seconds: 7, outputWidth: 800, outputHeight: 500, readoutContrast: true, pointer: true, drag: true, keyboard: true, reducedMotion: true, persistence: true, widths: [960, 390, 320], errors }, null, 2));
     console.log(`${city}: real WebGL control, input, persistence, reduced motion and responsive checks passed`);
   } finally {
     await browser.close();

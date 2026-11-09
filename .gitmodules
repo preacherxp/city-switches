@@ -13,3 +13,9 @@
 [submodule "repos/czestochowa-switch"]
 	path = repos/czestochowa-switch
 	url = https://github.com/preacherxp/czestochowa-switch.git
+[submodule "repos/katowice-switch"]
+	path = repos/katowice-switch
+	url = https://github.com/preacherxp/katowice-switch.git
+[submodule "repos/remscheid-switch"]
+	path = repos/remscheid-switch
+	url = https://github.com/preacherxp/remscheid-switch.git

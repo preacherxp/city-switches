@@ -5,7 +5,8 @@ const vm = require('node:vm');
 const { execFileSync } = require('node:child_process');
 
 const root = path.join(__dirname, '..');
-const cities = ['warsaw', 'berlin', 'lisbon', 'gliwice', 'czestochowa'];
+const cities = fs.readdirSync(path.join(root, 'repos')).filter((name) => name.endsWith('-switch') && fs.statSync(path.join(root, 'repos', name)).isDirectory()).map((name) => name.slice(0, -7));
+assert.ok(cities.length, 'initialize the city submodules before validating');
 let sharedEngine;
 for (const city of cities) {
   const repo = path.join(root, 'repos', `${city}-switch`);

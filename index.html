@@ -32,17 +32,19 @@
   .gliwice { --paper: #e8e8df; --night: #101b26; --dusk-colour: #8c716b; }
 
   .switch { width: min(680px, calc(100vw - 96px)); display: block; }
-  .read { display: flex; gap: 28px; align-items: baseline; justify-content: center; }
+  .read { display: flex; gap: 20px; align-items: baseline; justify-content: center; max-width: calc(100vw - 48px); padding: 12px 16px; border-radius: 12px; background: #13212c; color: #f6f2e9; }
   .clock { font: 500 44px/1.1 ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
   .place { font-size: 15px; }
   .place b { display: block; font-weight: 600; }
-  .place span { color: color-mix(in oklab, #8b86a3 var(--mix), #7d7566); }
+  .place span { color: #c6d1d5; }
   footer {
     background: #08080f; color: #8b86a3; text-align: center; padding: 40px 24px 56px; font-size: 14px;
   }
   footer a { color: inherit; text-underline-offset: 3px; }
   kbd { font: 500 12px ui-monospace, "SF Mono", Menlo, monospace; padding: 2px 6px; border: 1px solid #26243a; border-radius: 4px; }
   .czestochowa { --paper: #e9e6dd; --night: #111f31; --dusk-colour: #9d7d86; }
+  .katowice { --paper: #e4e7e5; --night: #111c2c; --dusk-colour: #82726e; }
+  .remscheid { --paper: #e5e9e6; --night: #101e25; --dusk-colour: #728582; }
 </style>
 </head>
 <body>
@@ -66,6 +68,14 @@
   <czestochowa-switch class="switch"></czestochowa-switch>
   <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Częstochowa</b><span>Daytime</span></div></div>
 </section>
+<section id="katowice" class="katowice" aria-label="Contemporary Katowice: The Culture Zone with .KTW towers, NOSPR and Spodek.">
+  <katowice-switch class="switch"></katowice-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Katowice</b><span>Daytime</span></div></div>
+</section>
+<section id="remscheid" class="remscheid" aria-label="Contemporary Remscheid: Vaillant headquarters and Holiday Inn Express on Lenneper Straße 164.">
+  <remscheid-switch class="switch"></remscheid-switch>
+  <div class="read" aria-hidden="true"><div class="clock">12:00</div><div class="place"><b>Remscheid</b><span>Daytime</span></div></div>
+</section>
 <footer>Drag to move through the hours. Tap to switch. <kbd>←</kbd> <kbd>→</kbd> step, <kbd>Space</kbd> toggles.<p><a href="https://github.com/preacherxp/city-switches">Source &amp; agent guide</a> · <a href="https://preacherxp.github.io/gliwice-switch/gliwice-day-night.gif">Gliwice GIF</a></p></footer>
 <script src="repos/warsaw-switch/city-switch.js"></script>
 <script src="repos/warsaw-switch/warsaw.js"></script>
@@ -73,6 +83,8 @@
 <script src="repos/lisbon-switch/lisbon.js"></script>
 <script src="repos/gliwice-switch/gliwice.js"></script>
 <script src="repos/czestochowa-switch/czestochowa.js"></script>
+<script src="repos/katowice-switch/katowice.js"></script>
+<script src="repos/remscheid-switch/remscheid.js"></script>
 <script>
   const phaseOf = (h) => (h >= 5 && h < 7 ? 'Dawn' : h >= 7 && h < 10 ? 'Morning' : h >= 10 && h < 16 ? 'Daytime' : h >= 16 && h < 18 ? 'Golden hour' : h >= 18 && h < 19.5 ? 'Signs coming on' : 'Night');
   for (const section of document.querySelectorAll('section')) {
