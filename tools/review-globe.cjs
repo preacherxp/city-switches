@@ -54,11 +54,12 @@ const origin=process.env.ORIGIN||'http://127.0.0.1:8080';
   // The map follows the selected switch into night
   await page.locator('[data-city="zabrze"]').click();await page.waitForTimeout(600);
   const day=await brightness();
-  await page.getByRole('switch').press('End');await page.waitForTimeout(900);
+  // The lens takes its time, so wait for it to arrive before measuring
+  await page.getByRole('switch').press('End');await page.waitForFunction(()=>{const s=document.querySelector('zabrze-switch');return s.checked&&!s.moving;});await settle();
   const night=await brightness();
   assert.ok(night<day*0.6,`map darkens at night (${day.toFixed(0)} → ${night.toFixed(0)})`);
   await page.screenshot({path:'capture/globe/night.png'});
-  await page.getByRole('switch').press('Home');await page.waitForTimeout(900);
+  await page.getByRole('switch').press('Home');await page.waitForFunction(()=>{const s=document.querySelector('zabrze-switch');return s.position===0&&!s.moving;});
 
   await page.locator('[data-city="gliwice"]').click();
   // The lens travels even under reduced motion, so wait for it to arrive
