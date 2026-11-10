@@ -553,7 +553,7 @@ async function start() {
   const response = await fetch('cities.json'); if (!response.ok) throw new Error('City catalogue could not load');
   const cities = await response.json(), ids = new Set();
   for (const city of cities) {
-    if (!/^[a-z]+$/.test(city.id) || ids.has(city.id) || !Number.isFinite(city.latitude) || Math.abs(city.latitude) > 90 || !Number.isFinite(city.longitude) || Math.abs(city.longitude) > 180 || !customElements.get(`${city.id}-switch`)) throw new Error('Invalid city catalogue');
+    if (!/^[a-z]+(-[a-z]+)*$/.test(city.id) || ids.has(city.id) || !Number.isFinite(city.latitude) || Math.abs(city.latitude) > 90 || !Number.isFinite(city.longitude) || Math.abs(city.longitude) > 180 || !customElements.get(`${city.id}-switch`)) throw new Error('Invalid city catalogue');
     ids.add(city.id);
   }
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;

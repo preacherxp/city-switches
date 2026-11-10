@@ -2,6 +2,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const {chromium}=require('playwright');
 const origin=process.env.ORIGIN||'http://127.0.0.1:8080';
+const cityCount=JSON.parse(fs.readFileSync('cities.json','utf8')).length;
 (async()=>{
  // Chrome includes the H.264 codec required by the exported MP4s.
  const browser=await chromium.launch({channel:'chrome',args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
@@ -21,7 +22,7 @@ const origin=process.env.ORIGIN||'http://127.0.0.1:8080';
   await page.waitForSelector('#map[data-ready="true"]');await settle();
   await page.screenshot({path:'capture/globe/world.png'});
   console.log('Map renderer ready');
-  assert.equal(await page.locator('.city-button').count(),8);
+  assert.equal(await page.locator('.city-button').count(),cityCount);
   assert.equal(await page.locator('#zoom-out').isDisabled(),true,'world view is the widest');
   const world=await scale();
 
@@ -116,7 +117,7 @@ const origin=process.env.ORIGIN||'http://127.0.0.1:8080';
   assert.ok(Math.abs(await lon()+9.1498)<0.01,'animated flight lands on Lisbon');
   assert.equal(await page.locator('#city-name .sr-only').textContent(),'Lisbon');
   await page.goto(`${origin}/videos.html`,{waitUntil:'networkidle'});
-  assert.equal(await page.locator('video').count(),8);
+  assert.equal(await page.locator('video').count(),cityCount);
   assert.ok(await page.locator('video').first().evaluate(video=>video.canPlayType('video/mp4; codecs="avc1.640020"')),'browser needs H.264 support');
   for(let index=0;index<cities.length;index++){
    console.log('Playing',cities[index].id);
@@ -126,7 +127,7 @@ const origin=process.env.ORIGIN||'http://127.0.0.1:8080';
    await video.evaluate(video=>video.pause());
   }
   assert.deepEqual(errors,[]);
-  fs.writeFileSync('capture/globe/checks.json',JSON.stringify({cities:8,map:true,clusterZoom:true,keyboard:true,drag:true,wheel:true,buttons:true,nightMap:{day,night},persistence:true,reducedMotion:true,videoPlayback:true,widths:[1280,820,390,320],errors},null,2));
+  fs.writeFileSync('capture/globe/checks.json',JSON.stringify({cities:cityCount,map:true,clusterZoom:true,keyboard:true,drag:true,wheel:true,buttons:true,nightMap:{day,night},persistence:true,reducedMotion:true,videoPlayback:true,widths:[1280,820,390,320],errors},null,2));
   console.log('Map review passed');
  }catch(error){await page.screenshot({path:'capture/globe/failure.png',fullPage:true}).catch(()=>{});fs.writeFileSync('capture/globe/failure.json',JSON.stringify({message:error.message,errors},null,2));throw error;}finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

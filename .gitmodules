@@ -22,3 +22,6 @@
 [submodule "repos/zabrze-switch"]
 	path = repos/zabrze-switch
 	url = https://github.com/preacherxp/zabrze-switch.git
+[submodule "repos/tarnowskie-gory-switch"]
+	path = repos/tarnowskie-gory-switch
+	url = https://github.com/preacherxp/tarnowskie-gory-switch.git

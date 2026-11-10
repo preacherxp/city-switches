@@ -94,5 +94,17 @@
     "paper": "#e8e6dc",
     "night": "#14212a",
     "dusk": "#967c69"
+  },
+  {
+    "id": "tarnowskie-gory",
+    "name": "Tarnowskie Góry",
+    "country": "Poland",
+    "latitude": 50.44548,
+    "longitude": 18.86147,
+    "locationSource": "https://www.geonames.org/3083440/",
+    "description": "The Rynek and Ratusz, the miners' belfry, Dom Sedlaczka and the narrow-gauge train.",
+    "paper": "#e9e5d8",
+    "night": "#121d2b",
+    "dusk": "#94707e"
   }
 ]
