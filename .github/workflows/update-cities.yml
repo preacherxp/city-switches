@@ -1,0 +1,44 @@
+# Follows the cities: pins every submodule at its repository's latest main, validates the result
+# and publishes it, so a city change reaches the map and gallery without a commit made by hand.
+name: Update cities
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: update-cities
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Pin every city at its latest commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A city that is still recording its video would be pinned without it; wait for the next run.
+          for url in $(git config -f .gitmodules --get-regexp '^submodule\..*\.url$' | cut -d' ' -f2); do
+            repo=${url#https://github.com/}; repo=${repo%.git}
+            if [ -n "$(gh run list -R "$repo" --workflow 'Export video' --limit 5 --json status -q '.[] | select(.status != "completed") | .status')" ]; then
+              echo "$repo is still exporting its video; trying again on the next run"; exit 0
+            fi
+          done
+          git submodule update --remote
+          cities=$(git diff --name-only | sed -E 's#repos/(.*)-switch#\1#' | paste -sd' ' -)
+          if [ -z "$cities" ]; then echo "Every city is up to date"; exit 0; fi
+          node tools/validate-switches.cjs
+          node tools/check-composition.cjs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am "Pin the latest ${cities// /, }"
+          git push
+          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" || echo "Pages build request failed; the push may already have triggered one"
