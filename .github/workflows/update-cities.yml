@@ -1,19 +1,20 @@
-# Follows the cities: pins every submodule at its repository's latest main, validates the result
-# and publishes it, so a city change reaches the map and gallery without a commit made by hand.
+# Follows the cities: pins every submodule at its repository's latest main, validates the result,
+# publishes it and checks the live site, so a city change reaches the map and gallery without a
+# commit made by hand.
 name: Update cities
 on:
   schedule:
-    - cron: '7,37 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
-  pages: write
+  pages: read
 concurrency:
   group: update-cities
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
         with:
@@ -22,23 +23,57 @@ jobs:
         with:
           node-version: '22'
       - name: Pin every city at its latest commit
+        id: pin
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # A city that is still recording its video would be pinned without it; wait for the next run.
-          for url in $(git config -f .gitmodules --get-regexp '^submodule\..*\.url$' | cut -d' ' -f2); do
-            repo=${url#https://github.com/}; repo=${repo%.git}
-            if [ -n "$(gh run list -R "$repo" --workflow 'Export video' --limit 5 --json status -q '.[] | select(.status != "completed") | .status')" ]; then
-              echo "$repo is still exporting its video; trying again on the next run"; exit 0
-            fi
+          # Take a city only when its last export, which tests the scene and the real switch, passed.
+          # One that is still exporting would be pinned without its video; wait for the next run.
+          take=""
+          for path in repos/*-switch; do
+            repo=$(git -C "$path" remote get-url origin); repo=${repo#https://github.com/}; repo=${repo%.git}
+            state=$(gh run list -R "$repo" --workflow 'Export video' --limit 1 --json status,conclusion -q '.[0] | .status + " " + .conclusion')
+            case "$state" in
+              "completed success") take="$take $path" ;;
+              completed*) echo "$repo: its last export did not pass ($state); keeping its current pin" ;;
+              *) echo "$repo is still exporting its video; trying again on the next run"; exit 0 ;;
+            esac
           done
-          git submodule update --remote
+          if [ -n "$take" ]; then git submodule update --remote -- $take; fi
           cities=$(git diff --name-only | sed -E 's#repos/(.*)-switch#\1#' | paste -sd' ' -)
           if [ -z "$cities" ]; then echo "Every city is up to date"; exit 0; fi
+          # All cities run on one engine here, so wait until each has taken the current shared files.
+          for repo in repos/*-switch; do
+            if ! cmp -s city-switch.js "$repo/city-switch.js" || ! cmp -s tools/capture-switch.cjs "$repo/tools/capture-switch.cjs"; then
+              echo "$repo has not taken the current shared files yet; trying again on the next run"; exit 0
+            fi
+          done
           node tools/validate-switches.cjs
           node tools/check-composition.cjs
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -am "Pin the latest ${cities// /, }"
           git push
-          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" || echo "Pages build request failed; the push may already have triggered one"
+          echo "cities=$cities" >> "$GITHUB_OUTPUT"
+      - name: Check the live site
+        if: steps.pin.outputs.cities
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CITIES: ${{ steps.pin.outputs.cities }}
+        run: |
+          sha=$(git rev-parse HEAD)
+          site=$(gh api "repos/$GITHUB_REPOSITORY/pages" -q .html_url)
+          for attempt in $(seq 60); do
+            build=$(gh api "repos/$GITHUB_REPOSITORY/pages/builds/latest" -q '.status + " " + .commit')
+            if [ "$build" = "built $sha" ]; then break; fi
+            if [ "$(git ls-remote origin refs/heads/main | cut -f1)" != "$sha" ]; then echo "A newer commit is being published; leaving the check to it"; exit 0; fi
+            if [ "$build" = "errored $sha" ]; then echo "The Pages build for $sha failed"; exit 1; fi
+            sleep 10
+          done
+          [ "$build" = "built $sha" ] || { echo "The Pages build for $sha did not finish in ten minutes"; exit 1; }
+          for city in $CITIES; do
+            for file in "$city.js" city-switch.js; do
+              curl -fsS "${site}repos/$city-switch/$file?v=$sha" | cmp - "repos/$city-switch/$file" || { echo "$city: the live $file differs from the pinned one"; exit 1; }
+            done
+          done
+          echo "The live site serves the pinned scenes: $CITIES"

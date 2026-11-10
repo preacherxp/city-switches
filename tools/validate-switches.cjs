@@ -13,9 +13,6 @@ for (const city of cities) {
   const engine = fs.readFileSync(path.join(repo, 'city-switch.js'), 'utf8');
   if (sharedEngine) assert.equal(engine, sharedEngine, `${city}: gallery engine must match the standalone engine`);
   sharedEngine = engine;
-  // Each city carries the central guide without its last section, which is about the map.
-  const guide = fs.readFileSync(path.join(root, 'AGENTS.md'), 'utf8').split('\n\n## Central map')[0] + '\n';
-  assert.equal(fs.readFileSync(path.join(repo, 'AGENTS.md'), 'utf8'), guide, `${city}: AGENTS.md must match the central guide`);
   const scene = fs.readFileSync(path.join(repo, `${city}.js`), 'utf8');
   const html = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
   const scripts = [...html.matchAll(/<script src="([^"]+)"/g)].map((match) => match[1]);

@@ -1,5 +1,7 @@
 name: Review globe
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -17,6 +19,7 @@ jobs:
       - name: Validate switches and globe geometry
         run: |
           node tools/validate-switches.cjs
+          node tools/check-composition.cjs
           node tools/test-globe.mjs
       - name: Install browser
         run: |
