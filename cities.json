@@ -106,5 +106,17 @@
     "paper": "#e9e5d8",
     "night": "#121d2b",
     "dusk": "#94707e"
+  },
+  {
+    "id": "nowy-targ",
+    "name": "Nowy Targ",
+    "country": "Poland",
+    "latitude": 49.47783,
+    "longitude": 20.03228,
+    "locationSource": "https://www.geonames.org/763523/",
+    "description": "The Rynek on a fair day: the Ratusz, St Catherine's tower, a highlander cart and the Tatras.",
+    "paper": "#e8e6dc",
+    "night": "#101a2c",
+    "dusk": "#8a6a8c"
   }
 ]

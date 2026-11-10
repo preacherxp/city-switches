@@ -4,7 +4,7 @@ on:
     inputs:
       cities:
         description: 'JSON list of cities to review and export'
-        default: '["warsaw", "berlin", "lisbon", "gliwice", "czestochowa", "katowice", "remscheid", "zabrze", "tarnowskie-gory"]'
+        default: '["warsaw", "berlin", "lisbon", "gliwice", "czestochowa", "katowice", "remscheid", "zabrze", "tarnowskie-gory", "nowy-targ"]'
         required: true
 permissions:
   contents: read

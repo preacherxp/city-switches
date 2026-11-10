@@ -42,6 +42,7 @@
   .remscheid { --paper: #e5e9e6; --night: #101e25; --dusk-colour: #728582; }
   .zabrze { --paper: #e8e6dc; --night: #14212a; --dusk-colour: #967c69; }
   .tarnowskie-gory { --paper: #e9e5d8; --night: #121d2b; --dusk-colour: #94707e; }
+  .nowy-targ { --paper: #e8e6dc; --night: #101a2c; --dusk-colour: #8a6a8c; }
 </style>
 </head>
 <body>
@@ -81,6 +82,10 @@
   <tarnowskie-gory-switch class="switch"></tarnowskie-gory-switch>
   <city-readout city="Tarnowskie Góry"></city-readout>
 </section>
+<section id="nowy-targ" class="nowy-targ" aria-label="Contemporary Nowy Targ: the Rynek on a fair day with the town hall, St Catherine's tower, a highlander cart and the yellow town bus, and the Tatras behind.">
+  <nowy-targ-switch class="switch"></nowy-targ-switch>
+  <city-readout city="Nowy Targ"></city-readout>
+</section>
 <footer>Drag to move through the hours. Tap to switch. <kbd>←</kbd> <kbd>→</kbd> step, <kbd>Space</kbd> toggles.<p><a href="https://github.com/preacherxp/city-switches">Source &amp; agent guide</a> · <a href="videos.html">60 fps videos</a></p> <a href="index.html">Explore the map</a></footer>
 <script src="repos/warsaw-switch/city-switch.js"></script>
 <script src="repos/warsaw-switch/warsaw.js"></script>
@@ -92,6 +97,7 @@
 <script src="repos/remscheid-switch/remscheid.js"></script>
 <script src="repos/zabrze-switch/zabrze.js"></script>
 <script src="repos/tarnowskie-gory-switch/tarnowskie-gory.js"></script>
+<script src="repos/nowy-targ-switch/nowy-targ.js"></script>
 <script>
   for (const section of document.querySelectorAll('section')) {
     const toggle = section.querySelector('.switch');

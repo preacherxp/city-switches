@@ -25,3 +25,6 @@
 [submodule "repos/tarnowskie-gory-switch"]
 	path = repos/tarnowskie-gory-switch
 	url = https://github.com/preacherxp/tarnowskie-gory-switch.git
+[submodule "repos/nowy-targ-switch"]
+	path = repos/nowy-targ-switch
+	url = https://github.com/preacherxp/nowy-targ-switch.git

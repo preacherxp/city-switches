@@ -16,6 +16,7 @@ an independent repository and GitHub Pages site, pinned here as a Git submodule.
 | Remscheid | [remscheid-switch](https://github.com/preacherxp/remscheid-switch) | [Open](https://preacherxp.github.io/remscheid-switch/) | [MP4](https://preacherxp.github.io/remscheid-switch/remscheid-day-night-60fps.mp4) |
 | Zabrze | [zabrze-switch](https://github.com/preacherxp/zabrze-switch) | [Open](https://preacherxp.github.io/zabrze-switch/) | [MP4](https://preacherxp.github.io/zabrze-switch/zabrze-day-night-60fps.mp4) |
 | Tarnowskie Góry | [tarnowskie-gory-switch](https://github.com/preacherxp/tarnowskie-gory-switch) | [Open](https://preacherxp.github.io/tarnowskie-gory-switch/) | [MP4](https://preacherxp.github.io/tarnowskie-gory-switch/tarnowskie-gory-day-night-60fps.mp4) |
+| Nowy Targ | [nowy-targ-switch](https://github.com/preacherxp/nowy-targ-switch) | [Open](https://preacherxp.github.io/nowy-targ-switch/) | [MP4](https://preacherxp.github.io/nowy-targ-switch/nowy-targ-day-night-60fps.mp4) |
 
 [Download the 60 fps full-switch videos](https://preacherxp.github.io/city-switches/videos.html)
 
@@ -77,7 +78,7 @@ The home page is a flat, zoomable pixel-art world map (`globe.mjs`, `globe.css`)
 
 Drag or use the arrow keys to pan; scroll, pinch, double-click, `+`/`−` or the buttons to zoom from the whole world down to neighbouring cities. `0` shows the whole world and `Home` returns to the selected city. Nearby markers are grouped; selecting a group zooms in until its cities separate. Every city is also available in an accessible list. The selected panel runs the original switch directly from its submodule. `cities.json` contains the catalogue and coordinates. No map service or API key is used.
 
-Run `node tools/test-globe.mjs` and the **Review globe** workflow for actual-browser checks of all nine selections, grouped markers, dragging, keyboard and wheel zoom, the map following night, saved switch state, reduced motion, responsive layouts and video playback.
+Run `node tools/test-globe.mjs` and the **Review globe** workflow for actual-browser checks of all ten selections, grouped markers, dragging, keyboard and wheel zoom, the map following night, saved switch state, reduced motion, responsive layouts and video playback.
 
 ## Attribution
 
