@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-  pages: read
+  pages: write
 concurrency:
   group: update-cities
 jobs:
@@ -54,6 +54,8 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -am "Pin the latest ${cities// /, }"
           git push
+          # A push made with the workflow token does not start a Pages build, so ask for one.
+          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" > /dev/null
           echo "cities=$cities" >> "$GITHUB_OUTPUT"
       - name: Check the live site
         if: steps.pin.outputs.cities
