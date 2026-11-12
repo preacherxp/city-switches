@@ -11,7 +11,7 @@ permissions:
 jobs:
   review:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
@@ -38,6 +38,7 @@ jobs:
           python3 -m http.server 8080 > "$RUNNER_TEMP/http.log" 2>&1 &
           NODE_PATH="$RUNNER_TEMP/recording/node_modules" node tools/capture-switch.cjs "$CITY"
           ffmpeg -y -framerate 60 -i "capture/$CITY/frames/%03d.png" -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart "capture/$CITY/$CITY-day-night-60fps.mp4"
+          ffmpeg -y -framerate 60 -i "capture/$CITY/frames-4x5/%03d.png" -c:v libx264 -crf 18 -pix_fmt yuv420p -movflags +faststart "capture/$CITY/$CITY-instagram-4x5-60fps.mp4"
       - uses: actions/upload-artifact@v5
         if: always()
         with:
