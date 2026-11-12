@@ -53,7 +53,7 @@ switch's visible window, when later scenery paints over a sign, or when a light
 is in a different state at the two noons the lens passes through.
 
 Each city repository's **Export video** workflow re-records its MP4 automatically whenever the scene changes on `main`, and commits it. The central **Review and capture switches** GitHub Actions workflow can still be run manually
-to capture each complete control as a seven-second H.264 MP4 at 60 fps, at 1600 × 1000 and at 1080 × 1350 (4:5) for Instagram. Each city also commits a 4:5 Instagram cover still. Recording
+to capture each complete control as a seven-second H.264 MP4 at 60 fps, at 1600 × 1000 and at 1080 × 1350 (4:5) for Instagram. Each city also commits a 4:5 Instagram cover still and six phase covers (day, golden hour, signs coming on, night, dawn, morning). Recording
 dependencies are installed only in the runner. The static demos stay buildless. Final MP4s are kept in each city’s own repository and linked from `videos.html`.
 
 This checks syntax, standalone assets, matching engine copies, the full time
